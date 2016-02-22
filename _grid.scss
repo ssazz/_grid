@@ -60,10 +60,10 @@ $lg : lg; $lg-break : 1200px;
 	}
 }
 
-[class^=c-#{xs}], 
-[class^=c-#{sm}], 
-[class^=c-#{md}], 
-[class^=c-#{lg}] 
+[class^=c-#{$xs}], 
+[class^=c-#{$sm}], 
+[class^=c-#{$md}], 
+[class^=c-#{$lg}] 
 {
 	position: relative;
 	min-height: 1px;
