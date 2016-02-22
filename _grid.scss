@@ -1,53 +1,69 @@
-/* 
-	custom grid system
-	Mariusz Gumienny
-*/
 $padding : 15px;
-* { box-sizing: border-box; }
-F.container { margin-right: auto; margin-left: auto; }
-@media (min-width: 768px) {
-  .container {
-    width: 750px;
-  }
-}
-@media (min-width: 992px) {
-  .container {
-    width: 970px;
-  }
-}
-@media (min-width: 1200px) {
-  .container {
-    width: 1170px;
-  }
-}
-.container-fluid { margin-right: auto; margin-left: auto; }
-.row { margin-left: -15px; margin-right: -15px; }
+$xs : xs; $xs-break :    0px;
+$sm : sm; $sm-break :  768px;
+$md : md; $md-break :  992px;
+$lg : lg; $lg-break : 1200px;
 
-@each $pre, $width in (-xs, 0), (-sm, 768), (-md, 992), (-lg, 1200) {
-	[class^="c#{$pre}"] {
-		@if $pre == "-xs" { float: none; }
-		@else { float: left }
-	}
-	@media screen and (min-width: #{$width}px) {
-		@for $i from 0 through 24 {
-			// 24-columns-grid
+* { box-sizing: border-box; }
+
+@media (min-width: 768px)  { .container { width: 750px;  } }
+@media (min-width: 992px)  { .container { width: 970px;  } }
+@media (min-width: 1200px) { .container { width: 1170px; } }
+
+.container { margin: 0 auto }
+
+.container-fluid 
+{ 
+	margin-right: auto; 
+	margin-left: auto; 
+}
+.row 
+{ 
+	margin-left: -15px; 
+	margin-right: -15px; 
+}
+
+@each $pre, $width in 
+	(-#{$xs}, $xs-break), 
+	(-#{$sm}, $sm-break),
+	(-#{$md}, $md-break), 
+	(-#{$lg}, $lg-break) 
+	{
+	@media screen and (min-width: $width) 
+	{
+		@for $i from 0 through 24 // 24 columns grid
+		{
 			.c#{$pre}-#{$i} { float: left }
 			$value : $i / 24 * 100%;
-			@each $type, $property in (c, width), (c-push, right), (c-pull, left), (c-offset, margin-left) {
+			@each $type, $property in 
+				(c,        width      ), 
+				(c-push,   right      ), 
+				(c-pull,   left       ), 
+				(c-offset, margin-left) 
+			{
 				.#{$type}#{$pre}-#{$i} {#{$property} : $value}
 			}
 		}
-		@for $j from 1 through 5 {
-			// 5-columns-grid
+		@for $j from 1 through 5 // 5 columns grid
+		{
 			.c#{$pre}-#{$j}-5 { float: left }
 			$value : $j / 5 * 100%;
-			@each $type, $property in (c, width), (c-push, right), (c-pull, left), (c-offset, margin-left) {
+			@each $type, $property in 
+				(c,        width      ), 
+				(c-push,   right      ), 
+				(c-pull,   left       ), 
+				(c-offset, margin-left) 
+			{
 				.#{$type}#{$pre}-#{$j}-5 {#{$property} : $value}
 			}
 		}
 	}
 }
-[class^="c-xs"], [class^="c-sm"], [class^="c-md"], [class^="c-lg"]
+
+[class^=c-#{xs}], 
+[class^=c-#{sm}], 
+[class^=c-#{md}], 
+[class^=c-#{lg}] 
 {
 	position: relative;
 	min-height: 1px;
@@ -61,25 +77,35 @@ F.container { margin-right: auto; margin-left: auto; }
 .container-fluid:before,
 .container-fluid:after,
 .row:before,
-.row:after {
+.row:after 
+{
   content: " ";
   display: table;
-  clear: both; }
+  clear: both; 
+}
 
 .clearfix:after,
 .container:after,
 .container-fluid:after,
-.row:after {
-  clear: both; }
+.row:after 
+{
+  clear: both; 
+}
 
-.no-space {
+.no-space 
+{
   padding-left: 0;
-  padding-right: 0; }
+  padding-right: 0; 
+}
 
-.no-space-children > * {
+.no-space-children > * 
+{
   padding-left: 0;
-  padding-right: 0; }
+  padding-right: 0; 
+}
 
-.space {
+.space 
+{
   padding-left: $padding;
-  padding-right: $padding; }
+  padding-right: $padding; 
+}
