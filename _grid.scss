@@ -1,5 +1,6 @@
 $padding : 15px;
-$col_num : 24;
+$col_num : 12;
+$float: ();
 $xs : xs; $xs-break :    0px;
 $sm : sm; $sm-break :  768px;
 $md : md; $md-break :  992px;
@@ -11,17 +12,9 @@ $lg : lg; $lg-break : 1200px;
 @media (min-width: $md-break) { .container { width: 970px;  }}
 @media (min-width: $lg-break) { .container { width: 1170px; }}
 
-.container, 
-.container-fluid 
-{
-	margin: 0 auto 
-}
+.container, .container-fluid { margin: 0 auto }
 
-.row 
-{ 
-	margin-left: -15px; 
-	margin-right: -15px; 
-}
+.row { margin: 0 -#{$padding} }
 
 @each $pre, $width in 
 	(-#{$xs}, $xs-break), 
@@ -31,62 +24,65 @@ $lg : lg; $lg-break : 1200px;
 	{
 	@media screen and (min-width: $width) 
 	{
-		@for $i from 0 through $col_num 
+	  
+	  @for $j from 0 through $col_num {
+			  $float : append($float, unquote('.c#{$pre}-#{$j}'), 'comma');
+		}
+		#{$float} { float: left; }
+		@for $i from 0 through $col_num
 		{
-			.c#{$pre}-#{$i} { float: left }
 			$value : $i / $col_num * 100%;
+			
 			@each $type, $property in 
-				(c,        width      ), 
-				(c-push,   right      ), 
-				(c-pull,   left       ), 
+				(c,        width      ),
+				(c-pull,   left       ),
+				(c-push,   right      ),
 				(c-offset, margin-left) 
 			{
-				.#{$type}#{$pre}-#{$i} {#{$property} : $value}
+				.#{$type}#{$pre}-#{$i} { #{$property} : $value}
 			}
 		}
-		@for $j from 1 through 5 // 5 columns grid
-		{
-			.c#{$pre}-#{$j}-5 { float: left }
-			$value : $j / 5 * 100%;
-			@each $type, $property in 
-				(c,        width      ), 
-				(c-push,   right      ), 
-				(c-pull,   left       ), 
-				(c-offset, margin-left) 
-			{
-				.#{$type}#{$pre}-#{$j}-5 {#{$property} : $value}
-			}
-		}
+		
+		// @todo | przerobić tak jak pętlę wyżej |
+		
+		//@for $j from 1 through 5 // 5 columns grid
+		//{
+		//	.c#{$pre}-#{$j}-5 { float: left }
+		//	$value : $j / 5 * 100%;
+		//	@each $type, $property in 
+		//		(c,        width      ), 
+		//		(c-push,   right      ), 
+		//		(c-pull,   left       ), 
+		//		(c-offset, margin-left) 
+		//	{
+		//		.#{$type}#{$pre}-#{$j}-5 {#{$property} : $value}
+		//	}
+		//}
 	}
 }
 
-[class^=c-#{$xs}], 
-[class^=c-#{$sm}], 
-[class^=c-#{$md}], 
+[class^=c-#{$xs}],
+[class^=c-#{$sm}],
+[class^=c-#{$md}],
 [class^=c-#{$lg}] 
 {
 	position: relative;
 	min-height: 1px;
-	padding: 0 15px;
+	padding: 0 $padding;
 }
 
-@each $class in (clearfix, container, container-fluid, row) {
-	#{$class}:after, #{$class}:before {
-		content: " ";
-		display: table;
-		clear: both;
-	}
-}
-
-.no-space, 
-.no-space-children > *
+$c : ('clearfix', 'container', 'container-fluid', 'row');
+$s : ();
+@each $i in $c 
 {
-  padding-left: 0;
-  padding-right: 0; 
+ $s : append($s, unquote('.#{$i}:before, .#{$i}:after'), 'comma');
+}
+#{$s} 
+{
+  content: " ";
+	display: table;
+	clear: both;
 }
 
-.space 
-{
-  padding-left: $padding;
-  padding-right: $padding; 
-}
+.no-space, .no-space-children > * { padding: auto 0 }
+.space { padding: auto $padding }
