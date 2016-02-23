@@ -1,34 +1,31 @@
 $padding : 15px;
 $col_num : 12;
 $float: ();
-$xs : xs; $xs-break :    0px;
-$sm : sm; $sm-break :  768px;
-$md : md; $md-break :  992px;
-$lg : lg; $lg-break : 1200px;
+$xs : xs; $xs-break :    0px; $xs-width:    0px;
+$sm : sm; $sm-break :  768px; $sm-width:  750px;
+$md : md; $md-break :  992px; $md-width:  970px;
+$lg : lg; $lg-break : 1200px; $lg-width: 1170px;
 
 * { box-sizing: border-box; }
-
-@media (min-width: $sm-break) { .container { width: 750px;  }}
-@media (min-width: $md-break) { .container { width: 970px;  }}
-@media (min-width: $lg-break) { .container { width: 1170px; }}
 
 .container, .container-fluid { margin: 0 auto }
 
 .row { margin: 0 -#{$padding} }
 
-@each $pre, $width in 
-	(-#{$xs}, $xs-break), 
-	(-#{$sm}, $sm-break),
-	(-#{$md}, $md-break), 
-	(-#{$lg}, $lg-break) 
+@each $pre, $break, $width in 
+	(-#{$xs}, $xs-break, $xs-width), 
+	(-#{$sm}, $sm-break, $sm-width),
+	(-#{$md}, $md-break, $md-width), 
+	(-#{$lg}, $lg-break, $lg-width) 
 	{
-	@media screen and (min-width: $width) 
+	@media screen and (min-width: $break) 
 	{
-	  
+		.container { width: $width }
 	  @for $j from 0 through $col_num {
 			  $float : append($float, unquote('.c#{$pre}-#{$j}'), 'comma');
 		}
 		#{$float} { float: left; }
+		$float : ();
 		@for $i from 0 through $col_num
 		{
 			$value : $i / $col_num * 100%;
