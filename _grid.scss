@@ -1,5 +1,6 @@
 $padding : 15px;
-$col_num : 12;
+$col_num : 3;
+$a : c;
 $float: ();
 $xs : xs; $xs-break :    0px; $xs-width:    0px;
 $sm : sm; $sm-break :  768px; $sm-width:  750px;
@@ -21,24 +22,21 @@ $lg : lg; $lg-break : 1200px; $lg-width: 1170px;
 	@media screen and (min-width: $break) 
 	{
 		.container { width: $width }
-	  @for $j from 0 through $col_num {
-			  $float : append($float, unquote('.c#{$pre}-#{$j}'), 'comma');
-		}
-		#{$float} { float: left; }
-		$float : ();
-		@for $i from 0 through $col_num
+		@for $i from 1 through $col_num
 		{
 			$value : $i / $col_num * 100%;
-			
 			@each $type, $property in 
-				(c,        width      ),
-				(c-pull,   left       ),
-				(c-push,   right      ),
-				(c-offset, margin-left) 
+				(#{$a},        width      ),
+				(#{$a}-pull,   left       ),
+				(#{$a}-push,   right      ),
+				(#{$a}-offset, margin-left) 
 			{
 				.#{$type}#{$pre}-#{$i} { #{$property} : $value}
 			}
+			$float : append($float, unquote('.#{$a}#{$pre}-#{$i}'), 'comma');
 		}
+		#{$float} { float: left; }
+		$float : ();
 		
 		// @todo | przerobić tak jak pętlę wyżej |
 		
@@ -58,10 +56,10 @@ $lg : lg; $lg-break : 1200px; $lg-width: 1170px;
 	}
 }
 
-[class^=c-#{$xs}],
-[class^=c-#{$sm}],
-[class^=c-#{$md}],
-[class^=c-#{$lg}] 
+[class^=#{$a}-#{$xs}],
+[class^=#{$a}-#{$sm}],
+[class^=#{$a}-#{$md}],
+[class^=#{$a}-#{$lg}] 
 {
 	position: relative;
 	min-height: 1px;
