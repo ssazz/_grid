@@ -1,4 +1,5 @@
 $padding : 15px;
+$col_num : 24;
 $xs : xs; $xs-break :    0px;
 $sm : sm; $sm-break :  768px;
 $md : md; $md-break :  992px;
@@ -6,17 +7,16 @@ $lg : lg; $lg-break : 1200px;
 
 * { box-sizing: border-box; }
 
-@media (min-width: 768px)  { .container { width: 750px;  } }
-@media (min-width: 992px)  { .container { width: 970px;  } }
-@media (min-width: 1200px) { .container { width: 1170px; } }
+@media (min-width: $sm-break) { .container { width: 750px;  }}
+@media (min-width: $md-break) { .container { width: 970px;  }}
+@media (min-width: $lg-break) { .container { width: 1170px; }}
 
-.container { margin: 0 auto }
-
+.container, 
 .container-fluid 
-{ 
-	margin-right: auto; 
-	margin-left: auto; 
+{
+	margin: 0 auto 
 }
+
 .row 
 { 
 	margin-left: -15px; 
@@ -31,10 +31,10 @@ $lg : lg; $lg-break : 1200px;
 	{
 	@media screen and (min-width: $width) 
 	{
-		@for $i from 0 through 24 // 24 columns grid
+		@for $i from 0 through $col_num 
 		{
 			.c#{$pre}-#{$i} { float: left }
-			$value : $i / 24 * 100%;
+			$value : $i / $col_num * 100%;
 			@each $type, $property in 
 				(c,        width      ), 
 				(c-push,   right      ), 
@@ -73,18 +73,13 @@ $lg : lg; $lg-break : 1200px;
 @each $class in (clearfix, container, container-fluid, row) {
 	#{$class}:after, #{$class}:before {
 		content: " ";
-  	display: table;
-  	clear: both;
+		display: table;
+		clear: both;
 	}
 }
 
-.no-space 
-{
-  padding-left: 0;
-  padding-right: 0; 
-}
-
-.no-space-children > * 
+.no-space, 
+.no-space-children > *
 {
   padding-left: 0;
   padding-right: 0; 
