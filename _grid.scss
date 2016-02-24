@@ -1,24 +1,22 @@
 $padding : 15px;
-$col_num : 3;
-$a : c;
-$float: ();
-$xs : xs; $xs-break :    0px; $xs-width:    0px;
-$sm : sm; $sm-break :  768px; $sm-width:  750px;
-$md : md; $md-break :  992px; $md-width:  970px;
-$lg : lg; $lg-break : 1200px; $lg-width: 1170px;
+$col_num :    3;
+$a       :    c;
+$float   :   ();
+$col     :   ();
+$s       :   ();
+$breakpoint-list: (
+  (xs,    0px,    0px),
+  (sm,  768px,  750px),
+  (md,  992px,  970px),
+  (lg, 1200px, 1170px)
+);
 
 * { box-sizing: border-box; }
 
 .container, .container-fluid { margin: 0 auto }
 
 .row { margin: 0 -#{$padding} }
-
-@each $pre, $break, $width in 
-	(-#{$xs}, $xs-break, $xs-width), 
-	(-#{$sm}, $sm-break, $sm-width),
-	(-#{$md}, $md-break, $md-width), 
-	(-#{$lg}, $lg-break, $lg-width) 
-	{
+@each $pre, $break, $width in $breakpoint-list {
 	@media screen and (min-width: $break) 
 	{
 		.container { width: $width }
@@ -31,35 +29,16 @@ $lg : lg; $lg-break : 1200px; $lg-width: 1170px;
 				(#{$a}-push,   right      ),
 				(#{$a}-offset, margin-left) 
 			{
-				.#{$type}#{$pre}-#{$i} { #{$property} : $value}
+				.#{$type}-#{$pre}-#{$i} { #{$property} : $value}
 			}
-			$float : append($float, unquote('.#{$a}#{$pre}-#{$i}'), 'comma');
+			$float : append($float, unquote('.#{$a}-#{$pre}-#{$i}'), 'comma');
 		}
 		#{$float} { float: left; }
 		$float : ();
-		
-		// @todo | przerobić tak jak pętlę wyżej |
-		
-		//@for $j from 1 through 5 // 5 columns grid
-		//{
-		//	.c#{$pre}-#{$j}-5 { float: left }
-		//	$value : $j / 5 * 100%;
-		//	@each $type, $property in 
-		//		(c,        width      ), 
-		//		(c-push,   right      ), 
-		//		(c-pull,   left       ), 
-		//		(c-offset, margin-left) 
-		//	{
-		//		.#{$type}#{$pre}-#{$j}-5 {#{$property} : $value}
-		//	}
-		//}
 	}
+	$col : append($col, unquote('[class^=#{$a}-#{$pre}]'), 'comma');
 }
-
-[class^=#{$a}-#{$xs}],
-[class^=#{$a}-#{$sm}],
-[class^=#{$a}-#{$md}],
-[class^=#{$a}-#{$lg}] 
+#{$col}
 {
 	position: relative;
 	min-height: 1px;
@@ -67,7 +46,6 @@ $lg : lg; $lg-break : 1200px; $lg-width: 1170px;
 }
 
 $c : ('clearfix', 'container', 'container-fluid', 'row');
-$s : ();
 @each $i in $c 
 {
  $s : append($s, unquote('.#{$i}:before, .#{$i}:after'), 'comma');
