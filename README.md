@@ -1,2 +1,2 @@
 # _grid
-Custom responsive CSS grid
+Custom adaptive CSS grid
