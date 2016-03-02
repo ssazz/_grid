@@ -1,6 +1,7 @@
+//@import 'normalize';
 $padding : 15px;
-$col_num :    3;
-$a       :    c;
+$col_num :   12;
+$prefix  :    c;
 $float   :   ();
 $col     :   ();
 $s       :   ();
@@ -18,27 +19,28 @@ $breakpoint-list: (
 
 .row { margin: 0 -#{$padding} }
 @each $pre, $break, $width in $breakpoint-list {
-	@if $break != null { $media : "and (min-width: #{$break})" }
-	@media screen #{$media} 
+	@if ($break != null) { $media : "and (min-width: #{$break})"; }
+	@else                { $media : ""; }
+	@media screen #{$media}
 	{
 		.container { width: $width }
 		@for $i from 1 through $col_num
 		{
 			$value : $i / $col_num * 100%;
 			@each $type, $property in 
-				(#{$a},        width      ),
-				(#{$a}-pull,   left       ),
-				(#{$a}-push,   right      ),
-				(#{$a}-offset, margin-left) 
+				(#{$prefix},        width      ),
+				(#{$prefix}-pull,   left       ),
+				(#{$prefix}-push,   right      ),
+				(#{$prefix}-offset, margin-left) 
 			{
 				.#{$type}-#{$pre}-#{$i} { #{$property} : $value}
 			}
-			$float : append($float, unquote('.#{$a}-#{$pre}-#{$i}'), 'comma');
+			$float : append($float, unquote('.#{$prefix}-#{$pre}-#{$i}'), 'comma');
 		}
 		#{$float} { float: left; }
 		$float : ();
 	}
-	$col : append($col, unquote('[class^=#{$a}-#{$pre}]'), 'comma');
+	$col : append($col, unquote('[class^=#{$prefix}-#{$pre}]'), 'comma');
 }
 #{$col}
 {
@@ -54,10 +56,7 @@ $c : ('clearfix', 'container', 'container-fluid', 'row');
 }
 #{$s} 
 {
-  content: " ";
+	content: " ";
 	display: table;
 	clear: both;
 }
-
-.no-space, .no-space-children > * { padding: auto 0 }
-.space { padding: auto $padding }
